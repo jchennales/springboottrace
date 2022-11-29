@@ -51,3 +51,12 @@ Now some of the logs have trace and span ids but not the JMS or Kafka listeners.
 	2022-11-18 14:14:21,270 INFO  demo.TraceController       [http-nio-8080-exec-4          ] [6377bd6d9e6d5cd307b94302beeec9b1,07b94302beeec9b1] - kafka-say: hello
 	2022-11-18 14:14:21,372 INFO  demo.TraceKafkaConsumer    [tenerEndpointContainer#0-0-C-1] [,] - kafka-listener-say: hello
 
+---
+
+So, reading further. JMS has its own instrumentation module: "brave-instrumentation-jms" and so does Kafka "brave-instrumentation-kafka-clients". I have not yet found a similar instrumentation package for OpenFeign.
+Adding these modules to the POM is not enough though. They don't appear to be covered by auto-configuration.
+
+I tried removing them both and adding "brave-instrumentation-messaging". Same behavior as with both modules independently
+
+Reading more I see tutorials defining beans for Tracing and JmsTracer. The "brave-instrumentation-jms" needs to be explicitly added for JmsTracer to be available.
+
